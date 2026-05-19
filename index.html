@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SirMagic — Kasir Ajaib untuk F&amp;B Indonesia</title>
+  <meta name="description" content="Platform POS berbasis AI untuk bisnis F&B Indonesia. Kelola kasir, laporan, dan stok — lebih pintar dari sebelumnya. Segera hadir 25 Mei 2026." />
+  <meta property="og:title" content="SirMagic — Kasir Ajaib untuk F&B Indonesia" />
+  <meta property="og:description" content="Segera hadir 25 Mei 2026. Daftar waitlist dan jadilah yang pertama mencoba." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal-900: #0d3d35;
+      --teal-800: #134f44;
+      --teal-700: #1a6657;
+      --teal-600: #1f6f5f;
+      --teal-500: #257a6a;
+      --teal-300: #4aab97;
+      --teal-100: #b3ddd7;
+      --gold:     #f59e0b;
+      --gold-light: #fcd34d;
+      --cream:    #fbfbfb;
+      --white:    #ffffff;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Nunito', system-ui, sans-serif;
+      background: var(--teal-900);
+      color: var(--cream);
+      overflow-x: hidden;
+    }
+
+    /* ── Background ──────────────────────────────────────────────────── */
+    .bg {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, #1a6657 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 100%, #0f4a3e 0%, transparent 60%),
+        var(--teal-900);
+    }
+    .bg-dots {
+      position: fixed; inset: 0; z-index: 0; opacity: .12;
+      background-image: radial-gradient(circle, #4aab97 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    /* ── Layout ──────────────────────────────────────────────────────── */
+    .page {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 2rem 1.25rem 3rem;
+      gap: 0;
+    }
+
+    /* ── Logo ────────────────────────────────────────────────────────── */
+    .logo-wrap {
+      display: flex; align-items: center; gap: .5rem;
+      margin-bottom: 2.5rem;
+      animation: fadeDown .7s ease both;
+    }
+    .logo-icon-img {
+      width: 44px; height: 44px; border-radius: 12px;
+      object-fit: contain;
+      box-shadow: 0 4px 20px rgba(0,0,0,.3);
+    }
+    .logo-wordmark {
+      height: 28px; object-fit: contain;
+    }
+    .logo-star {
+      font-size: 1rem; color: var(--gold); margin-left: .1rem;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* ── Badge ───────────────────────────────────────────────────────── */
+    .badge {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: rgba(245,158,11,.15);
+      border: 1px solid rgba(245,158,11,.35);
+      color: var(--gold-light);
+      font-size: .72rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .3rem .85rem; border-radius: 999px;
+      margin-bottom: 1.25rem;
+      animation: fadeDown .7s .1s ease both;
+    }
+    .badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold);
+      animation: blink 1.4s ease-in-out infinite;
+    }
+
+    /* ── Headline ────────────────────────────────────────────────────── */
+    .headline {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 900; line-height: 1.1;
+      text-align: center; letter-spacing: -.03em;
+      color: var(--white);
+      max-width: 680px;
+      animation: fadeDown .7s .15s ease both;
+    }
+    .headline .accent { color: var(--gold); }
+
+    .subtext {
+      margin-top: 1rem;
+      font-size: clamp(.95rem, 2.5vw, 1.125rem);
+      font-weight: 600; line-height: 1.65;
+      color: var(--teal-100);
+      text-align: center; max-width: 520px;
+      animation: fadeDown .7s .2s ease both;
+    }
+
+    /* ── Countdown ───────────────────────────────────────────────────── */
+    .countdown-wrap {
+      margin-top: 2.5rem;
+      display: flex; gap: clamp(.75rem, 3vw, 1.5rem);
+      animation: fadeUp .8s .3s ease both;
+    }
+    .cd-block {
+      display: flex; flex-direction: column; align-items: center; gap: .4rem;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px;
+      padding: clamp(1rem, 3vw, 1.5rem) clamp(1.25rem, 4vw, 2rem);
+      min-width: clamp(72px, 16vw, 96px);
+      backdrop-filter: blur(10px);
+      position: relative; overflow: hidden;
+    }
+    .cd-block::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(245,158,11,.5), transparent);
+    }
+    .cd-num {
+      font-size: clamp(2rem, 7vw, 3.5rem);
+      font-weight: 900; line-height: 1;
+      color: var(--gold);
+      font-variant-numeric: tabular-nums;
+      transition: transform .15s ease;
+    }
+    .cd-num.flip { transform: scaleY(.85); }
+    .cd-label {
+      font-size: .65rem; font-weight: 800;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--teal-100); opacity: .7;
+    }
+    .cd-sep {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 900; color: var(--gold);
+      opacity: .4; align-self: center; margin-top: -.5rem;
+      animation: blink 1s step-start infinite;
+    }
+
+    /* ── Launched state ──────────────────────────────────────────────── */
+    .launched-banner {
+      display: none;
+      flex-direction: column; align-items: center; gap: .75rem;
+      background: linear-gradient(135deg, rgba(245,158,11,.2), rgba(245,158,11,.05));
+      border: 1px solid rgba(245,158,11,.4);
+      border-radius: 20px; padding: 1.5rem 2rem;
+      margin-top: 2.5rem;
+      animation: fadeUp .8s ease both;
+    }
+    .launched-banner.show { display: flex; }
+    .launched-banner .emoji { font-size: 2.5rem; }
+    .launched-banner p { font-size: 1.1rem; font-weight: 800; color: var(--gold-light); text-align: center; }
+    .launched-banner a {
+      display: inline-block; margin-top: .25rem;
+      background: var(--gold); color: var(--teal-900);
+      font-weight: 800; font-size: .9rem;
+      padding: .6rem 1.75rem; border-radius: 999px;
+      text-decoration: none; transition: opacity .2s;
+    }
+    .launched-banner a:hover { opacity: .88; }
+
+    /* ── Form ────────────────────────────────────────────────────────── */
+    .form-wrap {
+      margin-top: 2.25rem;
+      width: 100%; max-width: 460px;
+      animation: fadeUp .8s .4s ease both;
+    }
+    .form-label {
+      display: block; text-align: center;
+      font-size: .8rem; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--teal-100);
+      margin-bottom: .75rem;
+    }
+    .form-row {
+      display: flex; gap: .6rem;
+    }
+    .form-input {
+      flex: 1; min-width: 0;
+      padding: .75rem 1rem;
+      border-radius: 12px;
+      background: rgba(255,255,255,.09);
+      border: 1.5px solid rgba(255,255,255,.15);
+      color: var(--white);
+      font-family: inherit; font-size: .95rem; font-weight: 600;
+      outline: none; transition: border-color .2s, background .2s;
+    }
+    .form-input::placeholder { color: rgba(255,255,255,.35); }
+    .form-input:focus {
+      border-color: var(--gold);
+      background: rgba(255,255,255,.12);
+    }
+    .form-btn {
+      padding: .75rem 1.25rem;
+      border-radius: 12px;
+      background: var(--gold);
+      color: var(--teal-900);
+      font-family: inherit; font-size: .9rem; font-weight: 800;
+      border: none; cursor: pointer;
+      white-space: nowrap;
+      transition: transform .15s ease, box-shadow .15s ease, opacity .15s;
+      box-shadow: 0 4px 18px rgba(245,158,11,.35);
+    }
+    .form-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(245,158,11,.45); }
+    .form-btn:active { transform: translateY(0); }
+    .form-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+    .form-success {
+      display: none; text-align: center;
+      padding: .9rem 1rem;
+      border-radius: 12px;
+      background: rgba(74,171,151,.15);
+      border: 1px solid rgba(74,171,151,.35);
+      color: var(--teal-100);
+      font-size: .9rem; font-weight: 700;
+      animation: fadeUp .4s ease both;
+    }
+    .form-success.show { display: block; }
+    .form-success .tick { color: #4aab97; margin-right: .35rem; }
+
+    .form-error {
+      margin-top: .5rem;
+      font-size: .8rem; font-weight: 700; color: #f87171;
+      text-align: center; display: none;
+    }
+    .form-error.show { display: block; }
+
+    /* ── Features strip ──────────────────────────────────────────────── */
+    .features {
+      margin-top: 3rem;
+      display: flex; flex-wrap: wrap; gap: .75rem;
+      justify-content: center; max-width: 600px;
+      animation: fadeUp .8s .5s ease both;
+    }
+    .feat-chip {
+      display: flex; align-items: center; gap: .45rem;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 999px;
+      padding: .45rem 1rem;
+      font-size: .8rem; font-weight: 700; color: var(--teal-100);
+      backdrop-filter: blur(6px);
+    }
+    .feat-chip .icon { font-size: 1rem; }
+
+    /* ── Footer ──────────────────────────────────────────────────────── */
+    .footer {
+      margin-top: 3.5rem;
+      font-size: .75rem; font-weight: 600;
+      color: rgba(255,255,255,.25);
+      text-align: center;
+      animation: fadeUp .8s .6s ease both;
+    }
+    .footer a { color: rgba(255,255,255,.35); text-decoration: none; }
+    .footer a:hover { color: var(--gold); }
+
+    /* ── Animations ──────────────────────────────────────────────────── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .7; transform: scale(1.25); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    /* ── Mobile ──────────────────────────────────────────────────────── */
+    @media (max-width: 480px) {
+      .form-row { flex-direction: column; }
+      .form-btn { width: 100%; padding: .8rem; }
+      .cd-sep { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="bg-dots"></div>
+
+  <main class="page">
+
+    <!-- Logo -->
+    <div class="logo-wrap">
+      <img src="sirmagic-icon.png" alt="SirMagic" class="logo-icon-img" />
+      <img src="sirmagic-logo-cream.png" alt="SirMagic" class="logo-wordmark" />
+      <span class="logo-star">✦</span>
+    </div>
+
+    <!-- Badge -->
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Web App &nbsp;·&nbsp; F&amp;B Edition
+    </div>
+
+    <!-- Headline -->
+    <h1 class="headline">
+      Kasir Ajaib <span class="accent">F&amp;B-mu</span><br/>segera hadir
+    </h1>
+
+    <p class="subtext">
+      Platform POS berbasis AI khusus bisnis F&amp;B Indonesia.
+      Kelola kasir, laporan, stok, dan antrean — lebih cepat dari secangkir kopi.
+    </p>
+
+    <!-- Countdown -->
+    <div class="countdown-wrap" id="countdownWrap">
+      <div class="cd-block">
+        <div class="cd-num" id="cd-days">--</div>
+        <div class="cd-label">Hari</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block">
+        <div class="cd-num" id="cd-hours">--</div>
+        <div class="cd-label">Jam</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block">
+        <div class="cd-num" id="cd-mins">--</div>
+        <div class="cd-label">Menit</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block">
+        <div class="cd-num" id="cd-secs">--</div>
+        <div class="cd-label">Detik</div>
+      </div>
+    </div>
+
+    <!-- Launched banner (shown when countdown hits 0) -->
+    <div class="launched-banner" id="launchedBanner">
+      <div class="emoji">🎉</div>
+      <p>SirMagic sudah diluncurkan!<br/>Coba sekarang secara gratis.</p>
+      <a href="https://app.sirmagic.id">Buka Aplikasi →</a>
+    </div>
+
+    <!-- Waitlist form -->
+    <div class="form-wrap" id="formWrap">
+      <label class="form-label">Daftar — jadilah yang pertama mencoba</label>
+      <div class="form-row">
+        <input
+          type="email"
+          id="emailInput"
+          class="form-input"
+          placeholder="email@bisnismu.com"
+          autocomplete="email"
+        />
+        <button class="form-btn" id="submitBtn" onclick="handleSubmit()">
+          Daftar Gratis
+        </button>
+      </div>
+      <div class="form-error" id="formError">Masukkan alamat email yang valid ya.</div>
+      <div class="form-success" id="formSuccess">
+        <span class="tick">✓</span> Kamu sudah terdaftar! Kami akan kabari saat hari-H tiba.
+      </div>
+    </div>
+
+    <!-- Feature chips -->
+    <div class="features">
+      <div class="feat-chip"><span class="icon">🧾</span> POS Kasir</div>
+      <div class="feat-chip"><span class="icon">📊</span> Laporan Real-time</div>
+      <div class="feat-chip"><span class="icon">📦</span> Manajemen Stok</div>
+      <div class="feat-chip"><span class="icon">🤖</span> AI Radar Insight</div>
+      <div class="feat-chip"><span class="icon">🔄</span> Sync Multi-outlet</div>
+      <div class="feat-chip"><span class="icon">💳</span> QRIS &amp; Cash</div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      &copy; 2026 SirMagic &nbsp;·&nbsp;
+      <a href="mailto:halo@sirmagic.id">halo@sirmagic.id</a>
+      &nbsp;·&nbsp; Dibuat dengan ❤️ untuk UMKM Indonesia
+    </footer>
+
+  </main>
+
+  <script>
+    // ── Countdown ─────────────────────────────────────────────────────────────
+    // Target: 25 Mei 2026, 00:00:00 WIB (UTC+7)
+    var TARGET = new Date('2026-05-25T00:00:00+07:00').getTime();
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function tick() {
+      var now  = Date.now();
+      var diff = TARGET - now;
+
+      if (diff <= 0) {
+        // Show launched state
+        document.getElementById('countdownWrap').style.display = 'none';
+        document.getElementById('launchedBanner').classList.add('show');
+        return;
+      }
+
+      var days  = Math.floor(diff / 86400000);
+      var hours = Math.floor((diff % 86400000) / 3600000);
+      var mins  = Math.floor((diff % 3600000)  / 60000);
+      var secs  = Math.floor((diff % 60000)    / 1000);
+
+      setNum('cd-days',  pad(days));
+      setNum('cd-hours', pad(hours));
+      setNum('cd-mins',  pad(mins));
+      setNum('cd-secs',  pad(secs));
+    }
+
+    var _prev = {};
+    function setNum(id, val) {
+      if (_prev[id] === val) return;
+      _prev[id] = val;
+      var el = document.getElementById(id);
+      el.classList.add('flip');
+      setTimeout(function() {
+        el.textContent = val;
+        el.classList.remove('flip');
+      }, 75);
+    }
+
+    tick();
+    setInterval(tick, 1000);
+
+    // ── Waitlist form ─────────────────────────────────────────────────────────
+    var STORAGE_KEY = 'sirmagic_waitlist';
+
+    // If already submitted, show success immediately
+    if (localStorage.getItem(STORAGE_KEY)) {
+      showSuccess();
+    }
+
+    function handleSubmit() {
+      var email = document.getElementById('emailInput').value.trim();
+      var errorEl = document.getElementById('formError');
+
+      errorEl.classList.remove('show');
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errorEl.classList.add('show');
+        document.getElementById('emailInput').focus();
+        return;
+      }
+
+      var btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Mendaftar...';
+
+      // Store locally — swap with real API endpoint when available
+      var list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      if (!list.includes(email)) {
+        list.push(email);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+      }
+
+      // Optional: fire-and-forget to real endpoint
+      // fetch('/api/waitlist', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ email: email })
+      // }).catch(function(){});
+
+      setTimeout(showSuccess, 600);
+    }
+
+    function showSuccess() {
+      document.getElementById('emailInput').style.display = 'none';
+      document.getElementById('submitBtn').style.display  = 'none';
+      document.getElementById('formError').classList.remove('show');
+      document.getElementById('formSuccess').classList.add('show');
+    }
+
+    // Enter key submits
+    document.getElementById('emailInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handleSubmit();
+    });
+  </script>
+</body>
+</html>
